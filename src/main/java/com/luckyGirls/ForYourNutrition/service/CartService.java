@@ -11,6 +11,8 @@ public interface CartService {
 	void createCart(Member member); // cart 생성
 
 	Cart getCartByMember(Member member); // 회원의 cart 조회
+	
+	void clearCart(Cart cart); // cart 삭제
 
 	/* cart item */
 	void addCartItem(Member member, CartItem cartItem);// cart item 추가

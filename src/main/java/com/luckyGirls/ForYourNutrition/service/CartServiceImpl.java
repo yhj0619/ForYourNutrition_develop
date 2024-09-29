@@ -43,6 +43,14 @@ public class CartServiceImpl implements CartService {
 			throw e;
 		}
 	}
+	
+	@Override
+    @Transactional
+    public void clearCart(Cart cart) {
+        // JPQL을 사용하여 특정 사용자의 장바구니 아이템을 모두 삭제
+       cartDao.clearCart(cart);
+    }
+	
 
 	@Override
 	@Transactional

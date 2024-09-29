@@ -59,12 +59,7 @@ public class CartController {
 		int totalDiscountedAmount = 0;
 		int cartPrice = 0;
 		int cartQuantity = 0;
-		
-		
-//		<td th:text="${sumNoDiscountPrice}">sum 정상가</td>
-//        <td th:text="${totalDiscountedAmount}">sum 할인된 금액</td>
-//        <td th:text="${cartPrice}">totalPrice</td>
-//        <td th:text="${cartQuantity}">총수량totalQuantity</td>
+
 		for(int i =0; i<cartItems.size();i++) {
 			CartItem cartItem = cartItems.get(i);
 			int price = cartItem.getItem().getPrice();
@@ -108,17 +103,31 @@ public class CartController {
 		model.addAttribute("cart", cart);
 		return "redirect:/cart/viewCart";
 	}
-
-	@PostMapping("/cart/removeCartItem")
-	public String removeCartItem(@RequestParam int cartItem_id, HttpSession session) {
-		MemberSession ms = (MemberSession) session.getAttribute("ms");
-		if (ms == null) {
-			return "redirect:/member/loginForm";
-		}
-		Member member = ms.getMember();
-		cartService.removeCartItem(member, cartItem_id);
-		return "redirect:/cart/viewCart";
-	}
+	
+	@PostMapping("/cart/delete")
+    public String removeCart(HttpSession session, Model model) {
+        MemberSession ms = (MemberSession) session.getAttribute("ms");
+        if (ms == null) {
+            return "redirect:/member/loginForm";
+        }
+        Member member = ms.getMember();
+        Cart cart = cartService.getCartByMember(member);
+        cartService.clearCart(cart);
+        
+        // 장바구니 뷰로 리디렉션
+        return "redirect:/cart/viewCart";
+    }
+//
+//	@PostMapping("/cart/removeCartItem")
+//	public String removeCartItem(@RequestParam int cartItem_id, HttpSession session) {
+//		MemberSession ms = (MemberSession) session.getAttribute("ms");
+//		if (ms == null) {
+//			return "redirect:/member/loginForm";
+//		}
+//		Member member = ms.getMember();
+//		cartService.removeCartItem(member, cartItem_id);
+//		return "redirect:/cart/viewCart";
+//	}
 
 	@PostMapping("/cart/updateQuantity")
 	public String updateQuantity(@RequestParam int cartItem_id, @RequestParam int quantity, @RequestParam String action,
@@ -182,4 +191,5 @@ public class CartController {
 
 		return "redirect:/cart/viewCart";
 	}
+	
 }

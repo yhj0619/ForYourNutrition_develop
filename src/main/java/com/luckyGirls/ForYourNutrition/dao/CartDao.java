@@ -16,6 +16,8 @@ public interface CartDao {
 
 	Cart findCartByMember(Member member) throws DataAccessException;
 
+	public void clearCart(Cart cart) throws DataAccessException;
+	
 	/* cart item */
 	void saveCartItem(CartItem cartItem) throws DataAccessException;
 

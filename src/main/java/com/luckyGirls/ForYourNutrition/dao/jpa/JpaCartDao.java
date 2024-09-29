@@ -1,5 +1,6 @@
 package com.luckyGirls.ForYourNutrition.dao.jpa;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.dao.DataAccessException;
@@ -14,6 +15,7 @@ import com.luckyGirls.ForYourNutrition.domain.Member;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 
@@ -49,6 +51,17 @@ public class JpaCartDao implements CartDao {
 			throw e;
 		}
 	}
+	
+	 @Transactional
+	 @Override
+	    public void clearCart(Cart cart) {
+		// Cart의 모든 CartItem을 삭제
+	        List<CartItem> items = (cart.getCartItems() != null) ? cart.getCartItems() : new ArrayList<>();
+	        for (CartItem item : items) {
+	            em.remove(em.contains(item) ? item : em.merge(item));
+	        }
+	    }
+
 
 	@Transactional
 	@Override

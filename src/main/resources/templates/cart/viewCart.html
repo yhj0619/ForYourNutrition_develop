@@ -1,131 +1,141 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-   <title>장바구니</title>
-   <link rel="stylesheet" type="text/css" href="/css/cartStyle.css">
-   <script th:inline="javascript">
-      function confirmAction(event, actionType) {
-         var message = '';
-         switch (actionType) {
-         case 'add':
-            message = '기입하신 수량만큼 증가됩니다.';
-            break;
-         case 'remove':
-            message = '기입하신 수량만큼 감소됩니다.';
-            break;
-         case 'delete':
-            message = '이 항목을 Cart에서 삭제하시겠습니까?';
-            break;
-         case 'order':
-            message = 'Cart의 모든 항목을 주문하시겠습니까?';
-            break;
-         default:
-            message = '작업이 완료되었습니다!';
-         }
-         if (!confirm(message)) {
-            event.preventDefault();
-         }
-      }
-   </script>
+<title>장바구니</title>
+<link rel="stylesheet" type="text/css" href="/css/cartStyle.css">
+<script th:inline="javascript">
+	function confirmAction(event, actionType) {
+		var message = '';
+		switch (actionType) {
+		case 'add':
+			message = '기입하신 수량만큼 증가됩니다.';
+			break;
+		case 'remove':
+			message = '기입하신 수량만큼 감소됩니다.';
+			break;
+		case 'delete':
+			message = '이 항목을 Cart에서 삭제하시겠습니까?';
+			break;
+		case 'order':
+			message = 'Cart의 모든 항목을 주문하시겠습니까?';
+			break;
+		default:
+			message = '작업이 완료되었습니다!';
+		}
+		if (!confirm(message)) {
+			event.preventDefault();
+		}
+	}
+</script>
 </head>
 <body>
-   <div th:insert="~{header}"></div>
+	<div th:insert="~{header}"></div>
 
-   <div class="container">
-      <div class="py-80">
-         <h2>Shopping Cart</h2>
-      </div>
-      
-      <div
-         th:if="${cart == null or cart.cartItemList == null or cart.cartItemList.size() == 0}"
-         class="empty-cart-message">
-         <h4>Cart에 담긴 상품이 없어요.</h4>
-         <h5>원하는 상품을 담아보세요</h5>
-         
-         <button onclick="location.href='/item/shopByTargetItem'" style="padding: 10px 20px; background-color: #002366; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; transition: background-color 0.3s;">
-             상품 보러 가기
-         </button>
-         
-      </div>
+	<div class="container">
+		<div class="">
+			<h2>Shopping Cart</h2>
+		</div>
 
-      <div
-         th:if="${cart != null and cart.cartItemList != null and cart.cartItemList.size() > 0}">
-         <table class="cart-table">
-            <thead>
-               <tr>
-                  <th>Image</th>
-                  <th>Item</th>
-                  <th>Category</th>
-                  <th>Detail</th>
-                  <th>Price</th>
-                  <th>Quantity</th>
-                  <th>Item's Price</th>
-               </tr>
-            </thead>
-            <tbody>
-               <tr th:each="cartItem : ${cart.cartItemList}">
-                  
-                  <td>
-                     <img id="itemImg" border="0" th:src="@{${cartItem.item.img}}" alt="Dynamic Image" />
-                  </td>
-                  
-                  <td th:text="${cartItem.item.name}">상품 이름</td>
-                  <td th:text="${cartItem.item.category}">카테고리</td>
-                  <td th:text="${cartItem.item.detail}">details</td>
-                  
-                  
-                 <td th:utext="'정가: ' + ${cartItem.item.price} + ' 원<br>할인가: ' + ${cartItem.item.price * (100 - cartItem.item.dcRate) / 100} + ' 원'">가격</td>
-                  <td>
-                     <form th:action="@{/cart/updateQuantity}" method="post" class="quantity-form">
-                          <input type="hidden" th:value="${cartItem.cartItem_id}" name="cartItem_id" readonly />
-                          <input type="text" name="quantity" th:value="${cartItem.quantity}" />
-                          <button type="submit" name="action" value="add" class="add">수량 UP</button>
-                          <button type="submit" name="action" value="remove" class="remove">수량 DOWN</button>
-                      	<button type="submit" name="action" value="delete"
+		<div
+			th:if="${cart == null or cart.cartItemList == null or cart.cartItemList.size() == 0}"
+			class="empty-cart-message">
+			<h4>Cart에 담긴 상품이 없어요.</h4>
+			<h5>원하는 상품을 담아보세요</h5>
+
+			<button onclick="location.href='/item/shopByTargetItem'"
+				style="padding: 10px 20px; background-color: #002366; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; transition: background-color 0.3s;">
+				상품 보러 가기</button>
+
+		</div>
+
+		<div
+			th:if="${cart != null and cart.cartItemList != null and cart.cartItemList.size() > 0}">
+			<table class="cart-table">
+				<thead>
+					<tr>
+						<th>Image</th>
+						<th>Item</th>
+						<th>Category</th>
+						<th>Detail</th>
+						<th>Price</th>
+						<th>Quantity</th>
+						<th>Item's Price</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="cartItem : ${cart.cartItemList}">
+
+						<td><img id="itemImg" border="0"
+							th:src="@{${cartItem.item.img}}" alt="Dynamic Image" /></td>
+
+						<td th:text="${cartItem.item.name}">상품 이름</td>
+						<td th:text="${cartItem.item.category}">카테고리</td>
+						<td th:text="${cartItem.item.detail}">details</td>
+
+
+						<td
+							th:utext="'정가: ' + ${cartItem.item.price} + ' 원<br>할인가: ' + ${cartItem.item.price * (100 - cartItem.item.dcRate) / 100} + ' 원'">가격</td>
+						<td>
+							<form th:action="@{/cart/updateQuantity}" method="post"
+								class="quantity-form">
+								<input type="hidden" th:value="${cartItem.cartItem_id}"
+									name="cartItem_id" readonly /> <input type="text"
+									name="quantity" th:value="${cartItem.quantity}" />
+								<button type="submit" name="action" value="add" class="add">수량
+									UP</button>
+								<button type="submit" name="action" value="remove"
+									class="remove">수량 DOWN</button>
+								<button type="submit" name="action" value="delete"
 									class="delete" onclick="return confirmAction(event, 'delete')">DELETE</button>
-                      	
-                      </form>
-                  </td>
- 
-                  <td th:text="${cartItem.item.price * (100 - cartItem.item.dcRate) / 100 * cartItem.quantity}">상품 금액</td>
-               </tr>
-            </tbody>
-         </table>
-         <table>
-            <thead>
-               <tr>
-                  <td>sum 정상가</td>
-                  <td>sum 할인된 금액</td>
-                  <td>totalPrice</td>
-                  <td>총수량totalQuantity</td>
-               </tr>
-            </thead>
-            <tbody>
-               <tr>
-                  <td th:text="${sumNoDiscountPrice}">sum 정상가</td>
-                  <td th:text="${totalDiscountedAmount}">sum 할인된 금액</td>
-                  <td th:text="${cartPrice}">totalPrice</td>
-                  <td th:text="${cartQuantity}">총수량totalQuantity</td>
-               </tr>
-            </tbody>
-         </table>
-      </div>
-      <br/><br/>
-      
-      <div class="summary">
-         
-      <!-- 오류 수정 해야 함  -->
-         <div class="order-button">
-            <form th:action="@{/order/fromCartOrder}" method="post"
-               onsubmit="confirmAction(event, 'order')">
-               <input type="hidden" th:value="${cart.cart_id}" name="cart_id" />
-               <button type="submit">주문하기</button>
-            </form>
-         </div>
-      </div>
-      
-      <br/><br/>
-   </div>
-   <div th:insert="~{footer}"></div>
+
+							</form>
+						</td>
+
+						<td
+							th:text="${cartItem.item.price * (100 - cartItem.item.dcRate) / 100 * cartItem.quantity}">상품
+							금액</td>
+					</tr>
+				</tbody>
+			</table>
+			<table>
+				<thead>
+					<tr>
+						<td>sum 정상가</td>
+						<td>sum 할인된 금액</td>
+						<td>totalPrice</td>
+						<td>총수량totalQuantity</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td th:text="${sumNoDiscountPrice}">sum 정상가</td>
+						<td th:text="${totalDiscountedAmount}">sum 할인된 금액</td>
+						<td th:text="${cartPrice}">totalPrice</td>
+						<td th:text="${cartQuantity}">총수량totalQuantity</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<br />
+		<br />
+		<!-- 전체삭제 -->
+ <div class="delete-button">
+        <form th:action="@{/cart/delete}" method="post">
+            <button type="submit">전체 삭제 (장바구니 비우기)</button>
+        </form>
+    </div>
+		<!-- 오류 수정 해야 함  -->
+		<div class="order-button">
+			<form th:action="@{/order/fromCartOrder}" method="post"
+				onsubmit="confirmAction(event, 'order')">
+				<input type="hidden" th:value="${cart.cart_id}" name="cart_id" />
+				<button type="submit">주문하기</button>
+			</form>
+		</div>
+	</div>
+
+	<br />
+	<br />
+	<div th:insert="~{footer}"></div>
 </body>
 </html>
