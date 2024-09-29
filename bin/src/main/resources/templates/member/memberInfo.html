@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Page</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f8f8;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            background-color: #ffffff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .hello {
+            font-size: 30px;
+            color: darkblue;
+            margin-bottom: 20px;
+        }
+
+        .points {
+            font-size: 24px;
+            color: #666666;
+            margin-bottom: 20px;
+        }
+
+        .nav {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .nav a {
+            background-color: #f0f0f0;
+            color: #333333;
+            padding: 10px 15px;
+            border: 1px solid #cccccc;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+            width: 300px; /* 버튼의 가로 길이 설정 */
+            margin: 0 auto; /* 버튼을 가운데 정렬 */
+            transition: background-color 0.3s;
+        }
+
+        .nav a:hover {
+            background-color: #002366;
+            color: #ffffff;
+        }
+
+        button {
+            background-color: #f0f0f0;
+            color: #333333;
+            padding: 10px 15px;
+            border: 1px solid #cccccc;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+            width: 330px; /* 버튼의 가로 길이 설정 */
+            margin: 0 auto; /* 버튼을 가운데 정렬 */
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #002366;
+            color: #ffffff;
+        }
+    </style>
+    <script>
+        function confirmDeletion() {
+            if (confirm("회원 탈퇴를 진행하시겠습니까?")) {
+                window.location.href = "/member/delete";
+            }
+        }
+    </script>
+</head>
+<body>
+	<div th:insert="~{header}"></div>
+    <div class="container">
+        <div class="hello">
+            <span th:text="${session.ms.member.name}"></span>님
+        </div>
+        <div class="nav">
+            <a href="memberDetail">회원정보 수정</a>
+            <a href="/survey/surveyInfo">문진표 정보 관리</a>
+            <a href="/member/viewAddressList">배송지 관리</a>
+            <a href="logout">로그아웃</a>
+            <button type="button" onclick="confirmDeletion()">회원 탈퇴</button>
+        </div>
+    </div>
+    <div th:insert="~{footer}"></div>
+</body>
+</html>

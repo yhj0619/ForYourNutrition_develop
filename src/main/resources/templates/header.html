@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Header</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: white;
+        }
+        #shop-submenu {
+            display: none;
+            margin-left: 20px; /* Optional: To indent the submenu items */
+        }
+        .menu-content a {
+            display: block;
+            padding: 5px;
+            text-decoration: none;
+            color: black;
+        }
+        .menu-content a:hover {
+            background-color: #f0f0f0;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: white;
+            padding: 15px 20px;
+            color: navy;
+            border-bottom: 1px solid #ccc;
+        }
+        .header .logo {
+		    font-size: 28px;
+		    font-weight: bold;
+		    color: #00239E;
+		    text-decoration: none;
+		    position: absolute;
+		    left: 50%;
+		    transform: translateX(-50%);
+		}
+        .header .menu {
+            position: relative;
+            display: inline-block;
+        }
+        .header .menu button {
+            background-color: white;
+            color: navy;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 10px;
+        }
+        .header .menu button:hover {
+            background-color: #f0f0f0;
+        }
+        .header .menu-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+        .header .menu-content a {
+            color: navy;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+        .header .menu-content a:hover {
+            background-color: #f0f0f0;
+        }
+        .header .menu:hover .menu-content {
+            display: block;
+        }
+        .header .right-buttons a {
+            color: navy;
+            padding: 10px 20px;
+            text-decoration: none;
+        }
+        .header .right-buttons a:hover {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="menu">
+            <button>Menu</button>
+            <div class="menu-content">
+                <a href="#" id="shop-toggle">Shop</a>
+                <div id="shop-submenu">
+                    <a href="/item/shopByTargetItem">섭취대상</a>
+                    <a href="/item/shopByEffectItem">건강고민별 상품</a>
+                    <a href="/item/shopByCategoryItem">카테고리별 상품</a>
+                    <a href="/item/shopByDCItem">특가 상품</a>
+                </div>
+                <a href="/member/myPage">Mypage</a>
+                <a href="/question/questionList">Q&amp;A</a>
+            </div>
+        </div>
+        <a href="/main" class="logo">FOR YOUR NUTRITION</a>
+        <div class="right-buttons" id="right-buttons">
+            <div th:unless="${session.ms}">
+            	<a href="/member/join">회원가입</a>
+				<a href="/member/loginForm">로그인</a>
+				<a href="/wish/viewWish">WISH</a>
+				<a href="/cart/viewCart">CART</a>
+            </div>
+            <div th:if="${session.ms}">
+				<a href="/member/logout">로그아웃</a>
+				<a href="/wish/viewWish">WISH</a>
+				<a href="/cart/viewCart">CART</a>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById('shop-toggle').addEventListener('click', function(event) {
+            event.preventDefault();
+            var submenu = document.getElementById('shop-submenu');
+            if (submenu.style.display === 'none' || submenu.style.display === '') {
+                submenu.style.display = 'block';
+            } else {
+                submenu.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
+

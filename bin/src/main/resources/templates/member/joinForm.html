@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>회원 가입</title>
+    <style>
+        .container {
+		    width: 60%;
+		    margin: 50px auto;
+		    background-color: #ffffff;
+		    padding: 30px;
+		    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+		    border-radius: 10px;
+		    text-align: center;
+		}
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+        input {
+            width: calc(45% - 22px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid navy;
+            box-sizing: border-box;
+        }
+        input.error-input {
+            border-color: navy;
+        }
+        .error-class {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+            text-align: left;
+        }
+        button {
+            width: 30%;
+            padding: 15px;
+            border-radius: 5px;
+            border: none;
+            background-color: navy;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #001f4d;
+        }
+        /* Gender Radio Button */
+        .gender-input-container {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .gender-label {
+            display: inline-block;
+            margin-right: 20px;
+        }
+        .gender-label input {
+            display: inline-block;
+            width: auto;
+            margin-right: 5px;
+        }
+        select {
+		    width: calc(20% - 22px); /* 이전에 50%로 설정되어 있던 부분을 100%로 변경 */
+		    padding: 10px;
+		    margin-bottom: 10px;
+		    border-radius: 5px;
+		    border: 1px solid navy;
+		    box-sizing: border-box;
+		}
+		h1 {
+			color: navy;
+		}
+		.error-class {
+			text-align: center;
+		}
+		.join-form {
+		    padding: 20px;
+		    background-color: #f9f9f9;
+		    border: 1px solid #e0e0e0;
+		    border-radius: 10px;
+		    margin-bottom: 30px;
+		}
+    </style>
+</head>
+<body>
+<div>
+<div th:insert="~{header}"></div>
+<div class="container">
+    <h1>회원 가입</h1>
+    <div class="join-form">
+    <form action="#" method="post" th:action="@{join}" th:object="${memberForm}">
+        <div>
+            <label for="id">아이디</label>
+            <input type="text" id="id" name="id" th:field="*{member.id}" class="error-input"/>
+            <div th:each="err : ${#fields.errors('member.id')}" class="error-class" th:text="${err}"></div>
+        </div>
+        <!-- 전역 오류 메시지 -->
+		<div th:if="${#fields.hasGlobalErrors()}">
+			<span th:each="err : ${#fields.globalErrors()}" th:text="${err}" class="error-class"></span><br>
+		</div>
+        <div>
+            <label for="password">비밀번호</label>
+            <input type="password" id="password" name="password" th:field="*{member.password}" class="error-input"/>
+            <div th:each="err : ${#fields.errors('member.password')}" class="error-class" th:text="${err}"></div>
+        </div>
+        <div>
+            <label for="repeatedPassword">비밀번호 확인</label>
+            <input type="password" id="repeatedPassword" name="repeatedPassword" th:field="*{repeatedPassword}" class="error-input"/>
+            <div th:each="err : ${#fields.errors('repeatedPassword')}" class="error-class" th:text="${err}"></div>
+        </div>
+        <div>
+            <label for="name">이름</label>
+            <input type="text" id="name" name="name" th:field="*{member.name}" class="error-input"/>
+            <div th:each="err : ${#fields.errors('member.name')}" class="error-class" th:text="${err}"></div>
+        </div>
+        <div>
+            <label for="nickname">닉네임</label>
+            <input type="text" id="nickname" name="nickname" th:field="*{member.nickname}" class="error-input"/>
+            <div th:each="err : ${#fields.errors('member.nickname')}" class="error-class" th:text="${err}"></div>
+        </div>
+        <div>
+            <label for="birth">생년월일</label>
+            <input type="date" id="birth" name="birth" th:field="*{member.birth}" class="error-input"/>
+            <div th:each="err : ${#fields.errors('member.birth')}" class="error-class" th:text="${err}"></div>
+        </div>
+        <div>
+            <label>성별</label>
+            남성<input type="radio" style="width: 5%" th:field="*{member.gender}" name="gender" value="1"/>
+            여성<input type="radio" style="width: 5%" th:field="*{member.gender}" name="gender" value="2"/><br>
+            <div th:each="err : ${#fields.errors('member.gender')}" class="error-class" th:text="${err}"></div>
+        </div>
+        <div>
+            <label for="phone_number">연락처</label>
+            <input type="text" id="phone_number" name="phone_number" th:field="*{member.phone_number}" class="error-input" placeholder="ex)010-0000-0000"/>
+            <div th:each="err : ${#fields.errors('member.phone_number')}" class="error-class" th:text="${err}"></div>
+        </div>
+        <div>
+            <label for="email">이메일</label>
+            <input type="email" id="email" name="email" th:field="*{member.email}" class="error-input"placeholder="ex)example@example.com"/>
+            <div th:each="err : ${#fields.errors('member.email')}" class="error-class" th:text="${err}"></div>
+        </div>
+        <div>
+            <label for="taking_time">영양제 섭취 시간</label>
+            <select id="taking_time" name="taking_time" th:field="*{member.taking_time}" class="error-input">
+                <option value="00">00:00</option>
+                <option value="01">01:00</option>
+                <option value="02">02:00</option>
+                <option value="03">03:00</option>
+                <option value="04">04:00</option>
+                <option value="05">05:00</option>
+                <option value="06">06:00</option>
+                <option value="07">07:00</option>
+                <option value="08">08:00</option>
+                <option value="09">09:00</option>
+                <option value="10">10:00</option>
+                <option value="11">11:00</option>
+                <option value="12">12:00</option>
+                <option value="13">13:00</option>
+                <option value="14">14:00</option>
+                <option value="15">15:00</option>
+                <option value="16">16:00</option>
+                <option value="17">17:00</option>
+                <option value="18">18:00</option>
+                <option value="19">19:00</option>
+                <option value="20">20:00</option>
+                <option value="21">21:00</option>
+                <option value="22">22:00</option>
+                <option value="23">23:00</option>
+            </select>
+            <div th:each="err : ${#fields.errors('member.taking_time')}" class="error-class" th:text="${err}"></div>
+        </div><br>
+        <label for="address">주소</label>
+        <div class="form-group">
+			<input class="form-control" style="width: 27%; display: inline;" placeholder="우편번호" name="addr1" id="addr1" th:field="*{address.zipCode}" type="text" readonly="readonly" >
+			<button type="button" style="width: 15%; background-color: gray; color: white;" class="btn btn-default" onclick="execPostCode();"><i class="fa fa-search"></i> 우편번호 찾기</button>
+			<div th:each="err : ${#fields.errors('address.zipCode')}" class="error-class" th:text="${err}"></div>                               
+		</div>
+		<div class="form-group">
+		    <input class="form-control" style="top: 5px;" placeholder="도로명 주소" name="addr2" id="addr2" th:field="*{address.streetAddress}" type="text" readonly="readonly" />
+			<div th:each="err : ${#fields.errors('address.streetAddress')}" class="error-class" th:text="${err}"></div>
+		</div>
+		<div class="form-group">
+		    <input class="form-control" placeholder="상세주소" name="addr3" id="addr3" th:field="*{address.detailAddress}" type="text"  />
+			<div th:each="err : ${#fields.errors('address.detailAddress')}" class="error-class" th:text="${err}"></div>
+		</div>
+        <button type="submit">가입하기</button>
+    </form>
+    </div>
+</div>
+</div>
+<div th:insert="~{footer}"></div>
+</body>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+function execPostCode() {
+    new daum.Postcode({
+        oncomplete: function(data) {
+           // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+           // 도로명 주소의 노출 규칙에 따라 주소를 조합한다.
+           // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+           var fullRoadAddr = data.roadAddress; // 도로명 주소 변수
+           var extraRoadAddr = ''; // 도로명 조합형 주소 변수
+
+           // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+           // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+           if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+               extraRoadAddr += data.bname;
+           }
+           // 건물명이 있고, 공동주택일 경우 추가한다.
+           if(data.buildingName !== '' && data.apartment === 'Y'){
+              extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+           }
+           // 도로명, 지번 조합형 주소가 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+           if(extraRoadAddr !== ''){
+               extraRoadAddr = ' (' + extraRoadAddr + ')';
+           }
+           // 도로명, 지번 주소의 유무에 따라 해당 조합형 주소를 추가한다.
+           if(fullRoadAddr !== ''){
+               fullRoadAddr += extraRoadAddr;
+           }
+
+           // 우편번호와 주소 정보를 해당 필드에 넣는다.
+           console.log(data.zonecode);
+           console.log(fullRoadAddr);
+           
+           
+           $("#addr1").val(data.zonecode);
+           $("#addr2").val(fullRoadAddr);
+           
+           /* document.getElementById('signUpUserPostNo').value = data.zonecode; //5자리 새우편번호 사용
+           document.getElementById('signUpUserCompanyAddress').value = fullRoadAddr;
+           document.getElementById('signUpUserCompanyAddressDetail').value = data.jibunAddress; */
+       }
+    }).open();
+}
+</script>
+</html>

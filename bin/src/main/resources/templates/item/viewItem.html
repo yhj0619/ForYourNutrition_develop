@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Item 상세보기</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f9f9f9;
+        }
+        .header {
+            width: 100%;
+            background-color: #ffffff;
+            padding: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .product-main {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .product-main img {
+            width: 400px;
+            border-radius: 10px;
+            align-content: center;
+            margin-left: 80px;
+        }
+        .product-main .image-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-width: 500px;
+            margin-right: 20px;
+        }
+        .product-details {
+            max-width: 50%;
+            padding: 20px;
+            margin-left: 80px;
+        }
+        .product-details h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .product-details p {
+            font-size: 16px;
+            color: #666;
+        }
+        .product-details .price {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .infos {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .info {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 30px;
+            text-align: center;
+            flex: 1;
+            margin: 0 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .info:first-child {
+            margin-left: 0;
+        }
+        .info:last-child {
+            margin-right: 0;
+        }
+        .buttons {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .buttons button {
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            font-size: 16px;
+            width: 100%;
+            max-width: 200px;
+        }
+        .product-info {
+            width: 100%;
+            margin-top: 20px;
+        }
+        .tabs {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .tabs button {
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            flex: 1;
+            margin: 0 5px;
+            box-sizing: border-box;
+            transition: background-color 0.3s ease;
+        }
+        .tabs button:first-child {
+            margin-left: 0;
+        }
+        .tabs button:last-child {
+            margin-right: 0;
+        }
+        .tabs button.active {
+            background-color: navy;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="~{header}"></div>
+<div class="container">
+    <div class="product-main">
+        <div class="image-container">
+            <img border="0" src="/images/img.png" />
+        </div>
+        <div class="product-details">
+            <h1 th:text="${item.name}">Product Name</h1>
+            <p>카테고리 > <span th:text="${item.category}"></span></p>
+            <p class="price"><span th:text="${item.price}"></span>원</p>
+            <p><span th:text="${item.detail}"></span></p>
+            <div class="infos">
+                <div class="info">
+                    <div>섭취대상</div>
+                    <p><span th:if="${item.target == 0}">어린이</span>
+                        <span th:if="${item.target == 1}">청소년</span>
+                        <span th:if="${item.target == 2}">성인</span>
+                        <span th:if="${item.target == 3}">시니어</span>
+                        <span th:if="${item.target == 4}">여성</span>
+                        <span th:if="${item.target == 5}">남성</span>
+                        <span th:if="${item.target == 6}">임산부</span></p>
+                </div>
+                <div class="info">
+                    <div>효과</div>
+                    <p><span th:if="${item.effect == 0}">면역력</span>
+                        <span th:if="${item.effect == 1}">다이어트</span>
+                        <span th:if="${item.effect == 2}">피로회복</span>
+                        <span th:if="${item.effect == 3}">눈건강</span>
+                        <span th:if="${item.effect == 4}">간건강</span>
+                        <span th:if="${item.effect == 5}">장건강</span>
+                        <span th:if="${item.effect == 6}">피부건강</span>
+                        <span th:if="${item.effect == 7}">관절&뼈</span>
+                        <span th:if="${item.effect == 8}">숙취해소</span>
+                        <span th:if="${item.effect == 9}">혈행개선</span>
+                        <span th:if="${item.effect == 10}">항산화</span></p>
+                </div>
+            </div>
+            <p></p>
+            <p></p>
+            <div>
+                <button onclick="decreaseQuantity()">-</button>
+                <input type="number" id="quantity" class="quantity" value="1" min="1">
+                <button onclick="increaseQuantity()">+</button>
+            </div>
+			<form id="cartForm" method="post" action="/cart/addCartItem">
+                <input type="hidden" name="item_id" th:value="${item.item_id}">
+                <input type="hidden" id="quantity" name="quantity" th:value="1">
+                <button type="submit">장바구니에 담기</button>
+            </form>
+            <form id="orderForm" method="post" action="/order/createOrder">
+                <input type="hidden" name="item_id" th:value="${item.item_id}">
+                <input type="hidden" id="quantity" name="quantity" th:value="1">
+                <button type="submit">구매하기</button>
+            </form>
+            <form id="wishForm" method="post" action="/wish/addWishItem">
+                <input type="hidden" name="item_id" th:value="${item.item_id}">
+                <button type="submit">찜하기</button>
+            </form>
+        </div>
+    </div>
+    <form id="reviewForm" method="get" action="/review/reviewList">
+		<input type="hidden" name="item_id" th:value="${item.item_id}">
+		<button type="submit">리뷰 보러가기</button>
+	</form>
+    <div class="product-info">
+        <div class="tabs">
+            <button class="active" onclick="showTab('details')">상품 상세</button>
+            <button onclick="showTab('reviews')">구매 후기</button>
+            <button onclick="showTab('shipping')">배송 안내</button>
+        </div>
+        <div id="details" class="tab-content active">
+            <h2>상품 상세</h2>
+            <p><strong>Detail:</strong> <span th:text="${item.detail}"></span></p>
+        </div>
+        <div id="reviews" class="tab-content">
+            <h2>구매 후기</h2>
+            <p>구매 후기 내용</p>
+        </div>
+        <div id="shipping" class="tab-content">
+            <h2>배송 안내</h2>
+            <p>배송 안내 내용</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    function decreaseQuantity() {
+        let quantityInput = document.getElementById('quantity');
+        let currentQuantity = parseInt(quantityInput.value);
+        if (currentQuantity > 1) {
+            quantityInput.value = currentQuantity - 1;
+        }
+    }
+
+    function increaseQuantity() {
+        let quantityInput = document.getElementById('quantity');
+        let currentQuantity = parseInt(quantityInput.value);
+        quantityInput.value = currentQuantity + 1;
+    }
+
+    function showTab(tabId) {
+        var contents = document.getElementsByClassName('tab-content');
+        for (var i = 0; i < contents.length; i++) {
+            contents[i].classList.remove('active');
+        }
+        document.getElementById(tabId).classList.add('active');
+
+        var tabs = document.querySelectorAll('.tabs button');
+        tabs.forEach(function(tab) {
+            tab.classList.remove('active');
+        });
+        document.querySelector('.tabs button[onclick="showTab(\'' + tabId + '\')"]').classList.add('active');
+    }
+</script>
+
+</body>
+</html>

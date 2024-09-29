@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Category Recommendation</title>
+    <style>
+        .cpcontainer {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            justify-content: center;
+        }
+        .item {
+            box-sizing: border-box;
+            padding: 30px;
+            text-align: center;
+            margin: 0 30px; /* Add margin to increase spacing */
+        }
+        #comimage{
+            height: 200px;
+            width: 160px;
+        }
+    </style>
+</head>
+<body>
+<div>
+</div>
+<div>
+        <div class="cpcontainer">
+                <th:block th:each="item : ${comparativeItems}">
+                    <div class="item" th:onclick="|window.location.href='@{/item/viewItem(item_id=${item.item_id})}'|">
+                        <img id="comimage" border="0" th:src="@{${item.img}}" alt="Dynamic Image" />
+                        <p th:text="${item.name}">Item Name</p>
+                    </div>
+                </th:block>
+        </div>
+</div>
+<script>
+    let currentIndex = 0;
+    const itemsPerPage = 3;
+    const itemCount = /*[[${comparativeItems.size()}]]*/ 0;
+
+    function updateControls() {
+        document.getElementById('prevBtn').disabled = currentIndex === 0;
+        document.getElementById('nextBtn').disabled = currentIndex >= Math.ceil(itemCount / itemsPerPage) - 1;
+    }
+
+    function prevSlide() {
+        if (currentIndex > 0) {
+            currentIndex--;
+            document.getElementById('carouselInner').style.transform = `translateX(-${currentIndex * 100}%)`;
+            updateControls();
+        }
+    }
+
+    function nextSlide() {
+        if (currentIndex < Math.ceil(itemCount / itemsPerPage) - 1) {
+            currentIndex++;
+            document.getElementById('carouselInner').style.transform = `translateX(-${currentIndex * 100}%)`;
+            updateControls();
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        updateControls();
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>My Questions</title>
+<link rel="stylesheet" type="text/css"
+	th:href="@{/css/myQuestionListStyle.css}">
+<script>
+	function showAlert(event, message) {
+		alert(message);
+	}
+
+	function confirmDelete(event) {
+		if (!confirm('삭제 시, Q&A 게시판으로 이동합니다. 정말 삭제하시겠습니까? ')) {
+			event.preventDefault();
+		}
+	}
+</script>
+</head>
+<body>
+	<div th:insert="~{header}"></div>
+	<div class="container">
+	<br/><br/>
+		<h2><span th:text="${memNickName}  + '님'"></span>이 작성하신 문의글 내역입니다.</h2>
+		<br/><br/><br/><br/>
+		<table>
+			<thead>
+				<tr>
+					<th>Title</th>
+					<th>Content</th>
+					<th>Date</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				<!-- Iterate over user's questions -->
+				<tr th:each="question : ${myQuestions}">
+					<td th:text="${question.title}"></td>
+					<td th:text="${question.content}"></td>
+					<td th:text="${question.qdate}"></td>
+					<td class="actions"><a
+						th:href="@{/question/viewQuestion(question_id=${question.question_id})}"
+						class="view-btn"
+						onclick="showAlert(event, 'Question 작성 내용으로 이동하겠습니다.');">view</a>
+						<form th:action="@{/question/deleteQuestion}" method="post"
+							class="delete" onsubmit="confirmDelete(event);">
+							<input type="hidden" name="question_id"
+								th:value="${question.question_id}">
+							<button type="submit" class="delete-btn">delete</button>
+						</form></td>
+				</tr>
+			</tbody>
+		</table>
+		<br/><br/>
+	</div>
+	<div th:insert="~{footer}"></div>
+</body>
+</html>
